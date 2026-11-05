@@ -36,6 +36,9 @@ router.post("/login", async function (req, res, next) {
     if(!isMatch){
       return res.status(400).json({ message: "Wrong password" });
     }
+    if(!user.isApproved){
+      return res.status(400).json({ message: "User not approved" });
+    }
 
     let token = jwt.sign(
       {userId: user._id, username: user.username, role: user.role },
