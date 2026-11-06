@@ -7,7 +7,7 @@ var tokenMiddleware = require("../middleware/token.middleware");
 router.get("/", tokenMiddleware, async function (req, res, next) {
     try {
         let products = await productSchema.find();
-        res.status(200).json({ message: "success", data: products });
+        res.status(200).json({status: 200, message: "success", data: products });
     } catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -82,7 +82,7 @@ router.get("/:id", tokenMiddleware, async function (req, res, next) {
         if(!product){
             return res.status(404).json({ message: "Product not found" });
         }
-        res.status(200).json({ message: "success", data: product });
+        res.status(200).json({ status: 200, message: "success", data: product });
     }catch (err) {
         res.status(500).json({ message: err.message });
     }
@@ -96,7 +96,7 @@ router.get("/:id/orders", tokenMiddleware, async function (req, res, next) {
             return res.status(404).json({ message: "Product not found" });
         }
         let orders = await orderShchema.find({ productId: id });
-        res.status(200).json({ message: "success", data: orders });
+        res.status(200).json({status: 200, message: "success", data: orders });
     }catch (err) {
         res.status(500).json({ message: err.message });
     }

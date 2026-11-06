@@ -12,12 +12,19 @@ router.post("/register", async function (req, res, next) {
     let { username, password } = req.body;
     // console.log("username: ", username);
     // console.log("password: ", password);
+    if (!username || !password) {
+      return res.status(400).json({ message: "Username and password are required" });
+    }
+    let checkUser = await userSchema.findOne({ username: username });
+    if (checkUser) {
+      return res.status(400).json({ message: "User already exists" });
+    }
 
     let user = new userSchema({
       username: username,
       password: bcrypt.hashSync(password, 10),
     });
-    user.save();
+    await user.save();
     res.status(201).json({ message: "success" });
   } catch (err) {
     res.status(500).json({ message: err.message });
